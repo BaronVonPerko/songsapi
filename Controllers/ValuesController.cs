@@ -21,7 +21,7 @@ namespace songsapi.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            return "value";
+            return $"the id is {id}";
         }
 
         // POST api/values
