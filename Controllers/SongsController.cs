@@ -4,32 +4,38 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using songsapi.Models;
+using songsapi.Database;
 
 namespace songsapi.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class SongsController : ControllerBase
     {
+
+        private SongsApiContext _dbContext;
+
+        public SongsController(SongsApiContext dbContext) {
+            _dbContext = dbContext;
+        }
+
         // GET api/songs
         [HttpGet]
         public ActionResult<IEnumerable<Song>> Get()
         {
-            var song = new Song() {
-                Title = "Supermassive Black Hole",
-                Artist = "Muse",
-                CreatedAt = DateTime.Now,
-                Id = 1
-            };
+            var songs = _dbContext.Songs.ToList();
 
-            return new Song[] { song };
+            return songs;
         }
 
         // GET api/songs/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<Song> Get(int id)
         {
-            return $"the id is {id}";
+            var song = _dbContext.Songs.Find(id);
+
+            return song;
         }
 
         // POST api/songs
